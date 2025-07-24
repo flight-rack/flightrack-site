@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlightRack - Find Your Next Getaway</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+    }
+    .container {
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+    }
+    input {
+      width: 80%;
+    }
+    button {
+      background-color: #00c9a7;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #009e84;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to FlightRack</h1>
+    <p>Where do you want to fly from?</p>
+    <form>
+      <input type="text" placeholder="Enter your departure airport (e.g. LAX)" required><br>
+      <input type="date" required><br>
+      <button type="submit">Find Flights</button>
+    </form>
+  </div>
+</body>
+</html>
