@@ -93,20 +93,23 @@
     // Simulate loading
     setTimeout(() => {
       const resultsContainer = document.getElementById("results");
-      resultsContainer.innerHTML = "";
+  resultsContainer.innerHTML = "";
 
-      flightDeals.forEach(flight => {
-        const card = document.createElement("div");
-        card.className = "flight-card";
-        card.innerHTML = `
-          <h3>Flight Deal: ${from} → ${flight.destination}</h3>
-          <p>Departure: ${depart}</p>
-          <p>Return: ${ret}</p>
-          <p>Airline: ${flight.airline}</p>
-          <p>Price: $${flight.price}</p>
-        `;
-        resultsContainer.appendChild(card);
-      });
+  flightDeals.forEach(flight => {
+    const card = document.createElement("div");
+    card.className = "flight-card";
+    card.innerHTML = `
+      <h3>Flight Deal: ${from} → ${flight.destination}</h3>
+      <p>Departure: ${depart}</p>
+      <p>Return: ${ret}</p>
+      <p>Airline: ${flight.airline}</p>
+      <p>Price: $${flight.price}</p>
+    `;
+    resultsContainer.appendChild(card);
+  });
+
+  // Clear the searching message
+  document.getElementById("search-summary").textContent = "";
     }, 1000);
   </script>
 </body>
