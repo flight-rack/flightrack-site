@@ -15,9 +15,10 @@
       margin: 0;
       background-color: #0C2D48; 
       position: relative; 
+      color: white;
     }
 
-     .logo {
+    .logo {
       position: absolute; 
       top: 20px; 
       left: 20px; 
@@ -25,10 +26,14 @@
       height: auto; 
       z-index: 10; 
     }
-    /* h1 {
-      margin-bottom: 20px;
-      font-size: 48px;
-    } */
+
+    .tagline {
+      margin-bottom: 10px;
+      font-size: 20px;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      max-width: 800px;
+    }
 
     form {
       background: black; 
@@ -59,12 +64,15 @@
 <body>
   <img src="Gemini_Generated_Image_xwek4lxwek4lxwek-removebg-preview.png" alt="FlightRack Logo" class="logo">
 
+  <div class="tagline">Enter your home airport and dates — we’ll show you the possibility's.</div>
+
   <form>
     <input type="text" placeholder="Departure Airport (e.g., LAX)" required />
     <input type="date" placeholder="Departure Date" required />
     <input type="date" placeholder="Return Date" required />
     <button type="submit">Search Flights</button>
   </form>
+
   <script>
     document.querySelector("form").addEventListener("submit", function(e) {
       e.preventDefault();
