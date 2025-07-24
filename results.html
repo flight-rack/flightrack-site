@@ -104,11 +104,13 @@
     const card = document.createElement("div");
     card.className = "flight-card";
     card.innerHTML = `
-      <h3>Flight Deal: ${from} → ${flight.destination}</h3>
-      <p>Departure: ${depart}</p>
-      <p>Return: ${ret}</p>
-      <p>Airline: ${flight.airline}</p>
-      <p>Price: $${flight.price}</p>
+      <a href="booking.html?from=${encodeURIComponent(from)}&to=${encodeURIComponent(flight.destination)}&depart=${encodeURIComponent(depart)}&return=${encodeURIComponent(ret)}&airline=${encodeURIComponent(flight.airline)}&price=${flight.price}" style="text-decoration: none; color: inherit;">
+    <h3>Flight Deal: ${from} → ${flight.destination}</h3>
+    <p>Departure: ${depart}</p>
+    <p>Return: ${ret}</p>
+    <p>Airline: ${flight.airline}</p>
+    <p>Price: $${flight.price}</p>
+  </a>
     `;
     resultsContainer.appendChild(card);
   });
