@@ -30,11 +30,11 @@
     .tagline {
       margin-bottom: 30px;
       font-size: 24px;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      max-width: 800px;
-      font-style: italic; 
       color: white;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      font-style: italic;
     }
 
     form {
@@ -47,10 +47,12 @@
       gap: 10px;
       width: 400px; 
     }
+
     input, button {
       padding: 10px;
       font-size: 16px;
     }
+
     button {
       background-color: #0070f3;
       color: white;
@@ -58,6 +60,7 @@
       cursor: pointer;
       border-radius: 5px;
     }
+
     button:hover {
       background-color: #005bb5; 
     }
@@ -68,19 +71,19 @@
 
   <div class="tagline">Enter your home airport and dates — we’ll show you the possibility's.</div>
 
-  <form>
-    <input type="text" placeholder="Departure Airport (e.g., LAX)" required />
-    <input type="date" placeholder="Departure Date" required />
-    <input type="date" placeholder="Return Date" required />
+  <form id="flight-form">
+    <input type="text" placeholder="Departure Airport (e.g., LAX)" required id="departure" />
+    <input type="date" required id="departDate" />
+    <input type="date" required id="returnDate" />
     <button type="submit">Search Flights</button>
   </form>
 
   <script>
-    document.querySelector("form").addEventListener("submit", function(e) {
+    document.getElementById("flight-form").addEventListener("submit", function(e) {
       e.preventDefault();
-      const departure = document.querySelector('input[type="text"]').value;
-      const departDate = document.querySelectorAll('input[type="date"]')[0].value;
-      const returnDate = document.querySelectorAll('input[type="date"]')[1].value;
+      const departure = document.getElementById("departure").value;
+      const departDate = document.getElementById("departDate").value;
+      const returnDate = document.getElementById("returnDate").value;
 
       const params = new URLSearchParams({
         from: departure,
