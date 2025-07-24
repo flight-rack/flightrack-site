@@ -2,57 +2,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FlightRack - Find Your Next Getaway</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FlightRack</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
       height: 100vh;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: white;
+      margin: 0;
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
     }
-    .container {
-      text-align: center;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 2rem;
+    h1 {
+      margin-bottom: 20px;
+    }
+    form {
+      background: white;
+      padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
     input, button {
       padding: 10px;
-      margin: 10px 0;
-      font-size: 1rem;
-      border: none;
-      border-radius: 5px;
-    }
-    input {
-      width: 80%;
+      font-size: 16px;
     }
     button {
-      background-color: #00c9a7;
+      background-color: #0070f3;
       color: white;
+      border: none;
       cursor: pointer;
+      border-radius: 5px;
     }
     button:hover {
-      background-color: #009e84;
+      background-color: #005bb5;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Welcome to FlightRack</h1>
-    <p>Where do you want to fly from?</p>
-    <form>
-      <input type="text" placeholder="Enter your departure airport (e.g. LAX)" required><br>
-      <input type="date" required><br>
-      <button type="submit">Find Flights</button>
-    </form>
-  </div>
+  <h1>Find Your Next Getaway</h1>
+  <form>
+    <input type="text" placeholder="Departure Airport (e.g., LAX)" required />
+    <input type="date" placeholder="Departure Date" required />
+    <input type="date" placeholder="Return Date" required />
+    <button type="submit">Search Flights</button>
+  </form>
 </body>
 </html>
