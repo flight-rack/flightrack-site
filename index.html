@@ -65,5 +65,21 @@
     <input type="date" placeholder="Return Date" required />
     <button type="submit">Search Flights</button>
   </form>
+  <script>
+    document.querySelector("form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const departure = document.querySelector('input[type="text"]').value;
+      const departDate = document.querySelectorAll('input[type="date"]')[0].value;
+      const returnDate = document.querySelectorAll('input[type="date"]')[1].value;
+
+      const params = new URLSearchParams({
+        from: departure,
+        depart: departDate,
+        return: returnDate
+      });
+
+      window.location.href = "/results.html?" + params.toString();
+    });
+  </script>
 </body>
 </html>
