@@ -66,35 +66,47 @@
     const depart = params.get("depart");
     const ret = params.get("return");
 
-    // Show the search summary
     document.getElementById("search-summary").textContent = 
       `Searching flights from ${from} departing ${depart} and returning ${ret}...`;
 
-    // Simulate loading results
+    const flightDeals = [
+      {
+        destination: "London",
+        airline: "British Airways",
+        price: 498
+      },
+      {
+        destination: "Paris",
+        airline: "Air France",
+        price: 534
+      },
+      {
+        destination: "Tokyo",
+        airline: "Japan Airlines",
+        price: 612
+      }
+    ];
+
+    // Sort flights by price (low to high)
+    flightDeals.sort((a, b) => a.price - b.price);
+
+    // Simulate loading
     setTimeout(() => {
-      document.getElementById("results").innerHTML = `
-        <div class="flight-card">
-          <h3>Flight Deal: ${from} → Tokyo</h3>
+      const resultsContainer = document.getElementById("results");
+      resultsContainer.innerHTML = "";
+
+      flightDeals.forEach(flight => {
+        const card = document.createElement("div");
+        card.className = "flight-card";
+        card.innerHTML = `
+          <h3>Flight Deal: ${from} → ${flight.destination}</h3>
           <p>Departure: ${depart}</p>
           <p>Return: ${ret}</p>
-          <p>Airline: Japan Airlines</p>
-          <p>Price: $612</p>
-        </div>
-        <div class="flight-card">
-          <h3>Flight Deal: ${from} → London</h3>
-          <p>Departure: ${depart}</p>
-          <p>Return: ${ret}</p>
-          <p>Airline: British Airways</p>
-          <p>Price: $498</p>
-        </div>
-        <div class="flight-card">
-          <h3>Flight Deal: ${from} → Paris</h3>
-          <p>Departure: ${depart}</p>
-          <p>Return: ${ret}</p>
-          <p>Airline: Air France</p>
-          <p>Price: $534</p>
-        </div>
-      `;
+          <p>Airline: ${flight.airline}</p>
+          <p>Price: $${flight.price}</p>
+        `;
+        resultsContainer.appendChild(card);
+      });
     }, 1000);
   </script>
 </body>
