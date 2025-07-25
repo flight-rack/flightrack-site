@@ -104,7 +104,7 @@
     const ret = params.get("return");
 
     document.getElementById("search-summary").textContent = 
-      Searching flights from ${from} departing ${depart} and returning ${ret}...;
+      `Searching flights from ${from} departing ${depart} and returning ${ret}...`;
 
     const flightDeals = [
       {
@@ -129,10 +129,8 @@
       }
     ];
 
-    // Sort flights by price (low to high)
     flightDeals.sort((a, b) => a.price - b.price);
 
-    // Simulate loading
     setTimeout(() => {
       const resultsContainer = document.getElementById("results");
       resultsContainer.innerHTML = "";
@@ -140,15 +138,14 @@
       flightDeals.forEach(flight => {
         const card = document.createElement("div");
         card.className = "flight-card";
-        card.innerHTML = 
+        card.innerHTML = `
           <h3>Flight Deal: ${from} → ${flight.destination}</h3>
           <p>Departure: ${depart}</p>
           <p>Return: ${ret}</p>
           <p>Airline: ${flight.airline}</p>
           <p>Price: $${flight.price}</p>
-        ;
+        `;
 
-        // Make cards clickable → placeholder booking page
         card.onclick = () => {
           window.location.href = "booking.html";
         };
@@ -156,7 +153,6 @@
         resultsContainer.appendChild(card);
       });
 
-      // Clear the searching message
       document.getElementById("search-summary").textContent = "Here are your results:";
     }, 1000);
   </script>
