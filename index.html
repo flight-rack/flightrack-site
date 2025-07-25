@@ -83,24 +83,27 @@
     <input type="text" placeholder="Departure Airport (e.g., LAX)" required id="departure" />
     <input type="date" required id="departDate" />
     <input type="date" required id="returnDate" />
+    <input type="number" min="1" placeholder="Number of Travelers" required id="travelers" />
     <button type="submit">Search Flights</button>
   </form>
 
   <script>
     document.getElementById("flight-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const departure = document.getElementById("departure").value;
-      const departDate = document.getElementById("departDate").value;
-      const returnDate = document.getElementById("returnDate").value;
+    e.preventDefault();
+    const departure = document.getElementById("departure").value;
+    const departDate = document.getElementById("departDate").value;
+    const returnDate = document.getElementById("returnDate").value;
+    const travelers = document.getElementById("travelers").value;
 
-      const params = new URLSearchParams({
-        from: departure,
-        depart: departDate,
-        return: returnDate
-      });
-
-      window.location.href = "/results.html?" + params.toString();
+    const params = new URLSearchParams({
+      from: departure,
+      depart: departDate,
+      return: returnDate,
+      travelers: travelers
     });
+
+    window.location.href = "/results.html?" + params.toString();
+  });
   </script>
 </body>
 </html>
