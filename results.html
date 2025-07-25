@@ -105,73 +105,68 @@
   <h2 id="search-summary">Searching...</h2>
   <div id="results"></div>
 
-  <!-- Travelpayouts Widget -->
-  <div style="margin-top: 50px; width: 100%; display: flex; justify-content: center;">
-    <script async src="https://tpembd.com/content?trs=441955&shmarker=656493&locale=en&curr=USD&powered_by=true&border_radius=0&plain=true&color_button=%232681ff&color_button_text=%23ffffff&color_border=%232681ff&promo_id=4132&campaign_id=121" charset="utf-8"></script>
-  </div>
-
   <script>
     const params = new URLSearchParams(window.location.search);
-  const from = params.get('from') || '';
-  const to = params.get('to') || 'anywhere';
-  const depart = params.get('depart') || '';
-  const ret = params.get('return') || '';
-  const travelers = parseInt(params.get('travelers')) || 1;
+    const from = params.get('from') || '';
+    const to = params.get('to') || 'anywhere';
+    const depart = params.get('depart') || '';
+    const ret = params.get('return') || '';
+    const travelers = parseInt(params.get('travelers')) || 1;
 
-  const token = 'a7e7ab2432c01ba033661625d3c8639d'; // your API token
-  const affiliateBase = 'https://tp.media/r?marker=656493&trs=441955&p=8626&u='; // your affiliate redirect base URL
+    const token = 'a7e7ab2432c01ba033661625d3c8639d'; // your API token
+    const affiliateBase = 'https://tp.media/r?marker=656493&trs=441955&p=8626&u='; // your affiliate redirect base URL
 
-  document.getElementById('search-summary').textContent = `Searching flights from ${from} departing ${depart} and returning ${ret} for ${travelers} traveler${travelers > 1 ? 's' : ''}...`;
+    document.getElementById('search-summary').textContent = `Searching flights from ${from} departing ${depart} and returning ${ret} for ${travelers} traveler${travelers > 1 ? 's' : ''}...`;
 
-  async function showResults() {
-    const resultsContainer = document.getElementById('results');
-    resultsContainer.innerHTML = '<p>Loading flight deals...</p>';
+    async function showResults() {
+      const resultsContainer = document.getElementById('results');
+      resultsContainer.innerHTML = '<p>Loading flight deals...</p>';
 
-    try {
-      const flights = await fetchFlightDeals(from, to, depart, ret);
+      try {
+        const flights = await fetchFlightDeals(from, to, depart, ret);
 
-      if (!flights || flights.length === 0) {
-        resultsContainer.innerHTML = '<p>No flights found for these dates.</p>';
-        return;
+        if (!flights || flights.length === 0) {
+          resultsContainer.innerHTML = '<p>No flights found for these dates.</p>';
+          return;
+        }
+
+        resultsContainer.innerHTML = ''; // clear loading
+
+        flights.forEach(flight => {
+          const pricePerTraveler = flight.value;
+          const totalPrice = pricePerTraveler * travelers;
+          const encodedFlightUrl = encodeURIComponent(flight.link);
+          const affiliateLink = affiliateBase + encodedFlightUrl;
+
+          const card = document.createElement('div');
+          card.className = 'flight-card';
+          card.innerHTML = `
+            <h3>${from} → ${flight.destination}</h3>
+            <p>Departure: ${flight.departure_at.slice(0,10)}</p>
+            <p>Return: ${flight.return_at.slice(0,10)}</p>
+            <p>Airline: ${flight.airline || 'Unknown'}</p>
+            <p>Price: $${pricePerTraveler} <small style="color:gray;">per traveler</small></p>
+            <p>Total for ${travelers}: <strong>$${totalPrice}</strong></p>
+            <button onclick="window.open('${affiliateLink}', '_blank')">Book Now</button>
+          `;
+          resultsContainer.appendChild(card);
+        });
+
+        document.getElementById('search-summary').textContent = "Here are your results:";
+      } catch (error) {
+        resultsContainer.innerHTML = '<p>Sorry, something went wrong while fetching flights.</p>';
+        console.error(error);
       }
-
-      resultsContainer.innerHTML = ''; // clear loading
-
-      flights.forEach(flight => {
-        const pricePerTraveler = flight.value;
-        const totalPrice = pricePerTraveler * travelers;
-        const encodedFlightUrl = encodeURIComponent(flight.link);
-        const affiliateLink = affiliateBase + encodedFlightUrl;
-
-        const card = document.createElement('div');
-        card.className = 'flight-card';
-        card.innerHTML = `
-          <h3>${from} → ${flight.destination}</h3>
-          <p>Departure: ${flight.departure_at.slice(0,10)}</p>
-          <p>Return: ${flight.return_at.slice(0,10)}</p>
-          <p>Airline: ${flight.airline || 'Unknown'}</p>
-          <p>Price: $${pricePerTraveler} <small style="color:gray;">per traveler</small></p>
-          <p>Total for ${travelers}: <strong>$${totalPrice}</strong></p>
-          <button onclick="window.open('${affiliateLink}', '_blank')">Book Now</button>
-        `;
-        resultsContainer.appendChild(card);
-      });
-
-      document.getElementById('search-summary').textContent = "Here are your results:";
-    } catch (error) {
-      resultsContainer.innerHTML = '<p>Sorry, something went wrong while fetching flights.</p>';
-      console.error(error);
     }
-  }
 
-  async function fetchFlightDeals(from, to, depart, ret) {
-    const url = `https://api.travelpayouts.com/aviasales/v3/prices_for_dates?origin=${from}&destination=${to}&departure_at=${depart}&return_at=${ret}&currency=usd&token=${token}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    return data.data || [];
-  }
+    async function fetchFlightDeals(from, to, depart, ret) {
+      const url = `https://api.travelpayouts.com/aviasales/v3/prices_for_dates?origin=${from}&destination=${to}&departure_at=${depart}&return_at=${ret}&currency=usd&token=${token}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      return data.data || [];
+    }
 
-  showResults();
+    showResults();
   </script>
-</body>
+  </body>
 </html>
