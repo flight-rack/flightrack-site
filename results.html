@@ -18,52 +18,55 @@
       height: 100vh;
       text-align: center;
     }
-  </style>
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f8fb;
-    color: #333;
+  <style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f1f5f9;
+    color: #1e293b;
     padding: 30px;
+    margin: 0;
   }
 
   h2 {
     text-align: center;
-    color: #222;
+    color: #0f172a;
+    font-size: 1.8rem;
   }
 
   ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
-    max-width: 600px;
-    margin: 0 auto;
+    max-width: 800px;
+    margin: 30px auto;
   }
 
   li {
     background: white;
     margin: 15px 0;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
   }
 
-  strong {
-    color: #111;
+  li:hover {
+    transform: scale(1.01);
   }
 
   a {
     display: inline-block;
-    margin-top: 10px;
-    padding: 10px 15px;
+    margin-top: 12px;
+    padding: 10px 20px;
     background-color: #2681ff;
-    color: #fff !important;
+    color: white;
     text-decoration: none;
     border-radius: 8px;
-    font-weight: bold;
+    font-weight: 600;
     transition: background-color 0.2s ease;
   }
 
   a:hover {
-    background-color: #1865cc;
+    background-color: #1a5fd3;
   }
 </style>
 
@@ -77,13 +80,17 @@ body {
     document.body.innerHTML = "<h2>Missing search info. Please go back and try again.</h2>";
   } else {
     const destinations = ["JFK", "LAS", "ORD", "MIA", "SEA", "ATL", "DEN", "BOS", "PHX", "DFW"];
+    const affiliateBase = "https://trip.tp.st/amQcOlw4";
+
     const results = destinations.map(dest => {
-      const link = `https://www.travelpayouts.com/widget_search_results?marker=656493&origin=${origin}&destination=${dest}&depart_date=${depart_date}&adults=${adults}&currency=USD&locale=en`;
-      return `<li>
-        ✈️ <strong>${origin}</strong> → <strong>${dest}</strong><br>
-        🗓️ Departing: ${depart_date}<br>
-        <a href="${link}" target="_blank">View Flights</a>
-      </li>`;
+      const url = `${affiliateBase}?origin=${origin}&destination=${dest}&depart_date=${depart_date}&adults=${adults}`;
+      return `
+        <li>
+          <strong>From:</strong> ${origin} → <strong>To:</strong> ${dest}<br>
+          <strong>Date:</strong> ${depart_date}<br>
+          <a href="${url}" target="_blank">See Flights</a>
+        </li>
+      `;
     }).join("");
 
     document.body.innerHTML = `
