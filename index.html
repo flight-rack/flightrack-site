@@ -88,11 +88,26 @@
   </form>
 
   <script>
-    document.getElementById("flight-form").addEventListener("submit", function(e) {
+    const departInput = document.getElementById("departDate");
+  const returnInput = document.getElementById("returnDate");
+
+  departInput.addEventListener("change", function () {
+    const selectedDepart = this.value;
+    if (selectedDepart) {
+      returnInput.min = selectedDepart;
+
+      // Optional: If return date is before new departure, clear it
+      if (returnInput.value < selectedDepart) {
+        returnInput.value = "";
+      }
+    }
+  });
+
+  document.getElementById("flight-form").addEventListener("submit", function(e) {
     e.preventDefault();
     const departure = document.getElementById("departure").value;
-    const departDate = document.getElementById("departDate").value;
-    const returnDate = document.getElementById("returnDate").value;
+    const departDate = departInput.value;
+    const returnDate = returnInput.value;
     const travelers = document.getElementById("travelers").value;
 
     const params = new URLSearchParams({
