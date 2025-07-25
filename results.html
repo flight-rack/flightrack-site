@@ -107,47 +107,29 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-  const from = params.get("from");
-  const depart = params.get("depart");
-  const ret = params.get("return");
+  const from = params.get("from") || "";
+  const depart = params.get("depart") || "";
+  const ret = params.get("return") || "";
   const travelers = parseInt(params.get("travelers")) || 1;
+
+  const marker = "656493"; // Your Travelpayouts marker
 
   document.getElementById("search-summary").textContent = 
     `Searching flights from ${from} departing ${depart} and returning ${ret} for ${travelers} traveler${travelers > 1 ? 's' : ''}...`;
 
-  const flightDeals = [
-    { destination: "London", airline: "British Airways", price: 498 },
-    { destination: "Paris", airline: "Air France", price: 534 },
-    { destination: "Tokyo", airline: "Japan Airlines", price: 612 },
-    { destination: "Sydney", airline: "Qantas", price: 750 }
-  ];
+  // Build Travelpayouts widget URL
+  const widgetURL = `https://www.travelpayouts.com/widgets/93d75f74ec76f2bfb285e9f4b601c688.html?marker=${marker}&origin=${from}&depart_date=${depart}&return_date=${ret}&adults=${travelers}&currency=usd&locale=en`;
 
-  flightDeals.sort((a, b) => a.price - b.price);
+  // Create and add the iframe
+  const iframe = document.createElement("iframe");
+  iframe.src = widgetURL;
+  iframe.width = "100%";
+  iframe.height = "800";
+  iframe.style.border = "none";
 
-  setTimeout(() => {
-    const resultsContainer = document.getElementById("results");
-    resultsContainer.innerHTML = "";
+  document.getElementById("results").appendChild(iframe);
 
-    flightDeals.forEach(flight => {
-      const total = flight.price * travelers;
-      const card = document.createElement("div");
-      card.className = "flight-card";
-      card.innerHTML = `
-        <h3>Flight Deal: ${from} → ${flight.destination}</h3>
-        <p>Departure: ${depart}</p>
-        <p>Return: ${ret}</p>
-        <p>Airline: ${flight.airline}</p>
-        <p>Price: $${flight.price} <span style="color:gray;">per traveler</span></p>
-        <p>Total for ${travelers}: <strong>$${total}</strong></p>
-      `;
-      card.onclick = () => {
-        window.location.href = "booking.html";
-      };
-      resultsContainer.appendChild(card);
-    });
-
-    document.getElementById("search-summary").textContent = "Here are your results:";
-  }, 1000);
+  document.getElementById("search-summary").textContent = "Here are your results:";
   </script>
 </body>
 </html>
