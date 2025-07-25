@@ -19,12 +19,55 @@
       text-align: center;
     }
   </style>
-</head>
-<body>
-  <h2>Redirecting you to flight results...</h2>
-  <p>If you are not redirected automatically, <a id="manual-link" href="#">click here</a>.</p>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f8fb;
+    color: #333;
+    padding: 30px;
+  }
 
-  <<script>
+  h2 {
+    text-align: center;
+    color: #222;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  li {
+    background: white;
+    margin: 15px 0;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  strong {
+    color: #111;
+  }
+
+  a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #2681ff;
+    color: #fff !important;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+  }
+
+  a:hover {
+    background-color: #1865cc;
+  }
+</style>
+
+<script>
   const params = new URLSearchParams(window.location.search);
   const origin = params.get("from");
   const depart_date = params.get("depart");
@@ -33,17 +76,18 @@
   if (!origin || !depart_date) {
     document.body.innerHTML = "<h2>Missing search info. Please go back and try again.</h2>";
   } else {
-    const destinations = ["JFK", "LAS", "ORD", "MIA", "SEA", "ATL", "DEN"];
+    const destinations = ["JFK", "LAS", "ORD", "MIA", "SEA", "ATL", "DEN", "BOS", "PHX", "DFW"];
     const results = destinations.map(dest => {
       const link = `https://www.travelpayouts.com/widget_search_results?marker=656493&origin=${origin}&destination=${dest}&depart_date=${depart_date}&adults=${adults}&currency=USD&locale=en`;
       return `<li>
-        Fly from <strong>${origin}</strong> to <strong>${dest}</strong> on ${depart_date}<br>
-        <a href="${link}" target="_blank">View Flights →</a>
+        ✈️ <strong>${origin}</strong> → <strong>${dest}</strong><br>
+        🗓️ Departing: ${depart_date}<br>
+        <a href="${link}" target="_blank">View Flights</a>
       </li>`;
     }).join("");
 
     document.body.innerHTML = `
-      <h2>Cheap Flights from ${origin} on ${depart_date}</h2>
+      <h2>Flights from ${origin} on ${depart_date}</h2>
       <ul>${results}</ul>
     `;
   }
