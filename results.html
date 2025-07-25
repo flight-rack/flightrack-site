@@ -107,29 +107,61 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-  const from = params.get("from") || "";
-  const depart = params.get("depart") || "";
-  const ret = params.get("return") || "";
-  const travelers = parseInt(params.get("travelers")) || 1;
+  const from = params.get('from') || '';
+  const to = params.get('to') || 'anywhere';
+  const depart = params.get('depart') || '';
+  const ret = params.get('return') || '';
+  const travelers = parseInt(params.get('travelers')) || 1;
 
-  const marker = "656493"; // Your Travelpayouts marker
+  const token = 'a7e7ab2432c01ba033661625d3c8639d'; // your API token
 
-  document.getElementById("search-summary").textContent = 
-    `Searching flights from ${from} departing ${depart} and returning ${ret} for ${travelers} traveler${travelers > 1 ? 's' : ''}...`;
+  document.getElementById('search-summary').textContent = `Searching flights from ${from} departing ${depart} and returning ${ret} for ${travelers} traveler${travelers > 1 ? 's' : ''}...`;
 
-  // Build Travelpayouts widget URL
-  const widgetURL = `https://www.travelpayouts.com/widgets/93d75f74ec76f2bfb285e9f4b601c688.html?marker=${marker}&origin=${from}&depart_date=${depart}&return_date=${ret}&adults=${travelers}&currency=usd&locale=en`;
+  async function showResults() {
+    const resultsContainer = document.getElementById('results');
+    resultsContainer.innerHTML = '<p>Loading flight deals...</p>';
 
-  // Create and add the iframe
-  const iframe = document.createElement("iframe");
-  iframe.src = widgetURL;
-  iframe.width = "100%";
-  iframe.height = "800";
-  iframe.style.border = "none";
+    try {
+      const flights = await fetchFlightDeals(from, to, depart, ret);
+      
+      if (flights.length === 0) {
+        resultsContainer.innerHTML = '<p>No flights found for these dates.</p>';
+        return;
+      }
 
-  document.getElementById("results").appendChild(iframe);
+      resultsContainer.innerHTML = ''; // clear loading
 
-  document.getElementById("search-summary").textContent = "Here are your results:";
+      flights.forEach(flight => {
+        const pricePerTraveler = flight.value;
+        const totalPrice = pricePerTraveler * travelers;
+
+        const card = document.createElement('div');
+        card.className = 'flight-card';
+        card.innerHTML = `
+          <h3>${from} → ${flight.destination}</h3>
+          <p>Departure: ${flight.departure_at.slice(0,10)}</p>
+          <p>Return: ${flight.return_at.slice(0,10)}</p>
+          <p>Airline: ${flight.airline || 'Unknown'}</p>
+          <p>Price: $${pricePerTraveler} <small style="color:gray;">per traveler</small></p>
+          <p>Total for ${travelers}: <strong>$${totalPrice}</strong></p>
+          <button onclick="window.open('${flight.link}', '_blank')">Book Now</button>
+        `;
+        resultsContainer.appendChild(card);
+      });
+    } catch (error) {
+      resultsContainer.innerHTML = '<p>Sorry, something went wrong while fetching flights.</p>';
+      console.error(error);
+    }
+  }
+
+  showResults();
+
+  async function fetchFlightDeals(from, to, depart, ret) {
+    const url = `https://api.travelpayouts.com/aviasales/v3/prices_for_dates?origin=${from}&destination=${to}&departure_at=${depart}&return_at=${ret}&currency=usd&token=${token}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.data || [];
+  }
   </script>
 </body>
 </html>
