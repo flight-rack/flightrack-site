@@ -14,49 +14,41 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-    }
-    .logo {
-      position: absolute; 
-      top: 20px; 
-      left: 20px; 
-      width: 350px; 
-      height: auto; 
-      z-index: 10;
-    }
-    h2 {
-      margin-top: 120px;
-      font-size: 28px;
+      justify-content: center;
+      height: 100vh;
       text-align: center;
     }
   </style>
 </head>
 <body>
-  <img src="Gemini_Generated_Image_xwek4lxwek4lxwek-removebg-preview.png" alt="FlightRack Logo" class="logo" />
-  <h2 id="search-summary">Loading flight results...</h2>
-
-  <div id="widget-container" style="margin-top: 50px; width: 100%; max-width: 700px;">
-    <!-- Widget will load here -->
-  </div>
+  <h2>Redirecting you to flight results...</h2>
+  <p>If you are not redirected automatically, <a id="manual-link" href="#">click here</a>.</p>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const from = params.get('from') || '';
+    const to = params.get('to') || '';
     const depart = params.get('depart') || '';
     const ret = params.get('return') || '';
     const travelers = params.get('travelers') || '1';
 
-    // Build the widget script URL with search params
-    const widgetScriptUrl = `https://tpembd.com/content?trs=441955&shmarker=656493&locale=en&curr=USD&powered_by=true&border_radius=0&plain=true&color_button=%232681ff&color_button_text=%23ffffff&color_border=%232681ff&promo_id=4132&campaign_id=121&origin=${from}&depart_date=${depart}&return_date=${ret}&adults=${travelers}`;
+    // Your affiliate marker
+    const marker = '656493';
 
-    document.getElementById('search-summary').textContent = 
-      `Showing flights from ${from} departing ${depart} and returning ${ret} for ${travelers} traveler${travelers > 1 ? 's' : ''}`;
+    if (!from || !to || !depart) {
+      document.body.innerHTML = '<h2>Please provide origin, destination, and departure date.</h2>';
+    } else {
+      // Construct affiliate URL
+      const affiliateUrl = `https://www.travelpayouts.com/widget_search_results?marker=${marker}&origin=${from}&destination=${to}&depart_date=${depart}&return_date=${ret}&adults=${travelers}&currency=USD&locale=en`;
 
-    // Dynamically create and insert the widget script
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = widgetScriptUrl;
-    script.charset = "utf-8";
-    document.getElementById('widget-container').appendChild(script);
+      // Redirect after short delay
+      setTimeout(() => {
+        window.location.href = affiliateUrl;
+      }, 2000);
+
+      // Set manual link href in case redirect fails
+      document.getElementById('manual-link').href = affiliateUrl;
+    }
   </script>
 </body>
 </html>
