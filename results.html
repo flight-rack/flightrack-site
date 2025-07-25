@@ -27,21 +27,25 @@
   <<script>
   const params = new URLSearchParams(window.location.search);
   const origin = params.get("from");
-  const destination = params.get("to");
   const depart_date = params.get("depart");
-  const return_date = params.get("return");
   const adults = params.get("travelers") || "1";
 
-  if (!origin || !destination || !depart_date) {
-    document.body.innerHTML = "<h2>Missing flight search info. Please go back and try again.</h2>";
+  if (!origin || !depart_date) {
+    document.body.innerHTML = "<h2>Missing search info. Please go back and try again.</h2>";
   } else {
-    const url = `https://www.travelpayouts.com/widget_search_results?marker=656493&origin=${origin}&destination=${destination}&depart_date=${depart_date}&return_date=${return_date}&adults=${adults}&currency=USD&locale=en`;
+    const destinations = ["JFK", "LAS", "ORD", "MIA", "SEA", "ATL", "DEN"];
+    const results = destinations.map(dest => {
+      const link = `https://www.travelpayouts.com/widget_search_results?marker=656493&origin=${origin}&destination=${dest}&depart_date=${depart_date}&adults=${adults}&currency=USD&locale=en`;
+      return `<li>
+        Fly from <strong>${origin}</strong> to <strong>${dest}</strong> on ${depart_date}<br>
+        <a href="${link}" target="_blank">View Flights →</a>
+      </li>`;
+    }).join("");
 
-    // Redirect after short delay
-    setTimeout(() => window.location.href = url, 2000);
-
-    // Show backup link
-    document.write(`<p>Redirecting... If it doesn't happen automatically, <a href="${url}">click here</a>.</p>`);
+    document.body.innerHTML = `
+      <h2>Cheap Flights from ${origin} on ${depart_date}</h2>
+      <ul>${results}</ul>
+    `;
   }
   </script>
 </body>
